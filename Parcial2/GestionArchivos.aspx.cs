@@ -12,39 +12,43 @@ namespace Parcial2
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (!this.IsPostBack)
             {
-                string username = Session["Username"] as string;
+                string username = this.Session["Username"] as string;
                 if (username != null)
                 {
-                    CargarArchivos(username);
+                    this.CargarArchivos(username);
+                }
+                else
+                {
+                    this.Response.Redirect("Registro.aspx");
                 }
             }
         }
 
         protected void btnUpload_Click(object sender, EventArgs e)
         {
-            if (fileUploader.HasFile)
+            if (this.fileUploader.HasFile)
             {
-                string username = Session["Username"] as string;
+                string username = this.Session["Username"] as string;
                 if (!string.IsNullOrEmpty(username))
                 {
-                    string folderPath = Server.MapPath($"~/Archivos/{username}");
+                    string folderPath = this.Server.MapPath($"~/Archivos/{username}");
                     if (!Directory.Exists(folderPath))
                     {
                         Directory.CreateDirectory(folderPath);
                     }
 
-                    string filePath = Path.Combine(folderPath, fileUploader.FileName);
-                    fileUploader.SaveAs(filePath);
-                    CargarArchivos(username);
+                    string filePath = Path.Combine(folderPath, this.fileUploader.FileName);
+                    this.fileUploader.SaveAs(filePath);
+                    this.CargarArchivos(username);
                 }
             }
         }
 
         private void CargarArchivos(string username)
         {
-            string folderPath = Server.MapPath($"~/Archivos/{username}");
+            string folderPath = this.Server.MapPath($"~/Archivos/{username}");
             if (Directory.Exists(folderPath))
             {
                 var files = Directory.GetFiles(folderPath).Select(f => new
@@ -53,8 +57,8 @@ namespace Parcial2
                     Path = f
                 }).ToList();
 
-                gvArchivos.DataSource = files;
-                gvArchivos.DataBind();
+                this.gvArchivos.DataSource = files;
+                this.gvArchivos.DataBind();
             }
         }
 
@@ -62,11 +66,10 @@ namespace Parcial2
         {
             string filePath = e.CommandArgument.ToString();
             string fileName = Path.GetFileName(filePath);
-            Response.ContentType = "application/octet-stream";
-            Response.AppendHeader("Content-Disposition", $"attachment; filename={fileName}");
-            Response.TransmitFile(filePath);
-            Response.End();
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AppendHeader("Content-Disposition", $"attachment; filename={fileName}");
+            this.Response.TransmitFile(filePath);
+            this.Response.End();
         }
-
     }
 }

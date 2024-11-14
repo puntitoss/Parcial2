@@ -16,21 +16,21 @@ namespace Parcial2
 
         protected void btnRegistrar_Click(object sender, EventArgs e)
         {
-            if (Page.IsValid)
+            if (this.Page.IsValid)
             {
-                // Obtener los valores de los campos
-                string username = txtUsername.Text;
-                string password = txtPassword.Text;
+                // Obtener los valores de los campos (y eliminar espacio en caso de que contenga)
+                string username = this.txtUsername.Text.Trim();
+                string password = this.txtPassword.Text.Trim();
 
                 // Guardar el nombre de usuario en una variable de sesión
-                Session["Username"] = username;
+                this.Session["Username"] = username;
 
                 // Crear una cookie de sesión para la contraseña
                 HttpCookie passwordCookie = new HttpCookie("Password", password);
-                Response.Cookies.Add(passwordCookie);
+                this.Response.Cookies.Add(passwordCookie);
 
                 // Redirigir a la página de Gestión de Archivos
-                Response.Redirect("GestionArchivos.aspx");
+                this.Response.Redirect("GestionArchivos.aspx");
             }
         }
 

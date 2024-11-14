@@ -69,6 +69,7 @@
   <ItemGroup>
     <Content Include="GestionArchivos.aspx" />
     <Content Include="Registro.aspx" />
+    <Content Include="Styles\estilos.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
